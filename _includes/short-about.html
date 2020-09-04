@@ -1,0 +1,182 @@
+<section class="visible-md visible-lg">
+    <hr>
+    <h5><a href="{{'/about/' | prepend: site.baseurl }}">ABOUT ME</a></h5>
+    <div class="short-about">
+        {% if site.sidebar-avatar %}
+        <img src="{{site.sidebar-avatar}}"/>
+        {% endif %}
+        {% if site.sidebar-about-description %}
+        <p>{{site.sidebar-about-description}}</p>
+        {% endif %}
+        <!--follow btn-->
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/wumingyao" target="_blank"
+               rel="noopener">
+                Follow</a>
+        </div>
+        <!--posts tags-->
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <a href="/archive">
+                        <p class="title has-text-weight-normal">
+                            {{site.posts.size}}
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            {{site.categories.size}}
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            {{site.tags.size}}
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <!-- SNS Link -->
+        {% include sns-links.html %}
+    </div>
+</section>
+<style>
+    .level {
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .button.is-rounded {
+        border-radius: 290486px;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    .button.is-link {
+        background-color: #3273dc !important;
+        border-color: transparent;
+        color: #fff !important;
+    }
+
+    .level-item {
+        align-items: center;
+        display: flex;
+        flex-basis: auto;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: center;
+    }
+
+    .button {
+        background-color: white !important;
+        border-color: #dbdbdb;
+        border-width: 1px;
+        color: #363636 !important;
+        cursor: pointer;
+        justify-content: center;
+        padding-bottom: calc(0.375em - 1px);
+        padding-left: 0.75em;
+        padding-right: 0.75em;
+        padding-top: calc(0.375em - 1px);
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .button.is-link:active, .button.is-link.is-active {
+        background-color: #2366d1 !important;
+        border-color: transparent !important;
+        color: #fff !important;
+        text-decoration: none !important;
+    }
+
+    .button:active, .button.is-active {
+        border-color: #4a4a4a !important;
+        color: #363636 !important;
+        text-decoration: none !important;
+    }
+
+    .button.is-link:hover, .button.is-link.is-hovered {
+        background-color: #1f62cd !important;;
+        border-color: transparent !important;;
+        color: #fff !important;
+        text-decoration: none !important;
+    }
+
+    .button:hover, .button.is-hovered {
+        border-color: #b5b5b5 !important;;
+        color: #363636 !important;;
+        text-decoration: none !important;
+    }
+
+    .button.is-link:focus:not(:active), .button.is-link.is-focused:not(:active) {
+        box-shadow: 0 0 0 0.125em rgba(50, 115, 220, 0.25);
+        text-decoration: none !important;
+    }
+
+    .button.is-link:focus, .button.is-link.is-focused {
+        border-color: transparent !important;
+        color: #fff !important;
+        text-decoration: none !important;
+    }
+
+    .button:focus:not(:active), .button.is-focused:not(:active) {
+        box-shadow: 0 0 0 0.125em rgba(50, 115, 220, 0.25) !important;
+        text-decoration: none !important;
+    }
+
+    .level.is-mobile {
+        margin-top: 10px;
+        display: flex!important;
+    }
+
+    .level-item {
+        align-items: center!important;
+        display: flex!important;
+        flex-basis: auto!important;
+        flex-grow: 0!important;
+        flex-shrink: 0!important;
+        justify-content: center!important;
+    }
+
+    .is-marginless {
+        margin: 0 !important;
+    }
+
+    .has-text-centered {
+        text-align: center !important;
+    }
+
+    .heading {
+        color: #383535 !important;
+        display: block!important;
+        font-size: 13px!important;
+        letter-spacing: 1px!important;
+        margin-bottom: 5px!important;
+        text-transform: uppercase!important;
+    }
+
+    .title {
+         color: #383535 !important;
+        font-size: 2rem!important;
+        font-weight: 600!important;
+        line-height: 1.125!important;
+        word-break: break-word!important;
+    }
+</style>

@@ -1,0 +1,61 @@
+---
+title: Categories
+layout: default
+description: "无关风月，只系春秋"
+header-img: "img/categories/categories-bg.jpg"
+---
+
+<!-- canvas-nest.min.js -->
+<script type="text/javascript" color="255,0,255" opacity='0.5' zIndex="-2" count="99"
+        src="../../../../js/canvas-nest.min.js"></script>
+
+<!-- Page Header -->
+{% include intro-header.html type='page' short=true %}
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+            <!-- Article List -->
+            <div class="mini-post-list js-result">
+
+                {% for category in site.categories %}
+                <h3 class="post-preview item">{{ category[0] }}<span class="tag">{{category[1].size}}</span></h3>
+                <ul>
+                    {% for post in category[1] %}
+                    <li class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                <hr>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .tag{
+        margin-right: 20px;
+        float:right;
+        align-items: center;
+        background-color: whitesmoke;
+        border-radius: 4px;
+        color: #4a4a4a;
+        /*display: inline-flex;*/
+        font-size: 0.75rem;
+        height: 2em;
+        justify-content: center;
+        line-height: 1.5;
+        padding-left: 0.75em;
+        padding-right: 0.75em;
+        white-space: nowrap;
+    }
+</style>
+<!-- 页面点击小红心 -->
+<!--<script type="text/javascript" src="/js/love.js"></script>-->
+
+
+<!--   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>-->
+<!--   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>-->
+<!--   <script type="text/javascript" src="/js/src/fireworks.js"></script>-->

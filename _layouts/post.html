@@ -1,0 +1,281 @@
+---
+layout: default
+---
+
+<!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+{% include intro-header.html type='post' %}
+
+<!--让GitHub Page支持Latex公式-->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+        type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+
+
+
+
+
+</script>
+<!--小人跟随鼠标移动组件-->
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
+<script>
+    L2Dwidget.init({
+        "model": {
+            jsonPath:
+            //小女孩
+                "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+            //猫咪
+            // "https://unpkg.com/live2d-widget-model-hijiki/assets/hijiki.model.json",
+            //西装男学生
+            // "https://unpkg.com/live2d-widget-model-chitose/assets/chitose.model.json",
+            //水手女孩
+            //     "https://unpkg.com/live2d-widget-model-haruto/assets/haruto.model.json",
+            //大长腿
+            // "https://unpkg.com/live2d-widget-model-hibiki/assets/hibiki.model.json",
+            //红衣女孩
+            //      "https://unpkg.com/live2d-widget-model-izumi/assets/izumi.model.json",
+            //大长发
+            //     "https://unpkg.com/live2d-widget-model-miku/assets/miku.model.json",
+            // "https://unpkg.com/live2d-widget-model-unitychan/assets/unitychan.model.json",
+            "scale": 1
+        }, "display": {
+            "position": "left", "width": 100, "height": 200,
+            "hOffset": 30, "vOffset": -20
+        }, "mobile": {"show": true, "scale": 1.5},
+        // 透明度设置
+        "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+    });
+</script>
+<style>
+    table {
+        /*max-width: 600px !important; !*表格最大宽度，避免表格过宽*!*/
+        margin:auto; /*外边距*/
+    }
+
+    table tr {
+        border-top: 1px solid #ebebeb;;
+        background-color: white;
+    }
+
+    table tr:nth-child(2n) {
+        background-color: #f6f8fa;
+    }
+
+    table tr th {
+        border: 1px solid #ebebeb;;
+        background-color: #eaf1f9;
+        font-weight: normal!important;
+        white-space: nowrap !important;
+        /*text-align: center;*/
+    }
+
+    table tr td {
+        border: 1px solid #ebebeb;
+    }
+
+    table tr th :first-child, table tr td :first-child {
+        margin-top: 0;
+    }
+
+    table tr th :last-child, table tr td :last-child {
+        margin-bottom: 0;
+    }
+</style>
+
+<!-- 添加评论系统 -->
+<link rel="stylesheet" href="{{site.url}}/css/gitalk.css">
+<script src="{{site.url}}/js/gitalk.min.js"></script>
+
+<!-- 添加打赏 -->
+<link href="{{site.url}}/css/reward.css?v=6.2.0" rel="stylesheet" type="text/css"/>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                {% if page.multilingual %}
+                <!-- Language Selector -->
+                <select class="sel-lang" onchange="onLanChange(this.options[this.options.selectedIndex].value)">
+                    <option value="0" selected> 中文 Chinese</option>
+                    <option value="1"> 英文 English</option>
+                </select>
+                {% endif %}
+
+                {{ content }}
+                </span>
+                <!--标明出处-->
+                <div style="text-align: left;">
+                    <br/>
+                    <p><b>转载请标明如下内容:</b></p>
+                    <blockquote style="border-left: 3px solid #FF1700 !important;">
+                        <p>本文作者：吴明耀</p>
+                        <p>本文链接：<a href="{{page.url | prepend: site.url}}">{{page.url | prepend: site.url}}</a></p>
+                        <p>简书：<a href="https://www.jianshu.com/u/f351700402cd">Anunnaki</a></p>
+                        <p>CSDN: <a href="https://me.csdn.net/qinshihuangabc">吴明耀の博客</a></p>
+                    </blockquote>
+                </div>
+
+                <hr>
+
+                <!-- 打赏功能 -->
+                <div>
+                    <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+
+                        <div>☛来<a href="https://github.com/wumingyao">Github</a>关注我☚</div>
+                        <button id="rewardButton" disable="enable"
+                                onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+                            <span>打 赏</span>
+                        </button>
+                        <div id="QR" style="display: none;">
+
+                            <div id="wechat" style="display: inline-block">
+                                <img id="wechat_qr" src="/img/payimg/weipayimg.png" alt="wumingyao 微信支付"/>
+                                <p>微信支付</p>
+                            </div>
+                            <div id="alipay" style="display: inline-block">
+                                <img id="alipay_qr" src="/img/payimg/alipayimg.jpg" alt="wumingyao 支付宝"/>
+                                <p>支付宝</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="pager">
+                    {% if page.previous.url %}
+                    <li class="previous">
+                        <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}"
+                           data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">
+                            Previous<br>
+                            <span>{{page.previous.title}}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if page.next.url %}
+                    <li class="next">
+                        <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip"
+                           data-placement="top" title="{{page.next.title}}">
+                            Next<br>
+                            <span>{{page.next.title}}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <hr style="visibility: hidden;">
+
+                <!--                 {% if site.disqus_username %} -->
+                <!-- disqus 评论框 start -->
+                <!--                 <div class="comment">
+                                    <div id="disqus_thread" class="disqus-thread"></div>
+                                </div> -->
+                <!-- disqus 评论框 end -->
+                <!--                 {% endif %} -->
+
+                <!--                 {% if site.netease_comment %} -->
+                <!-- 网易云跟帖 评论框 start -->
+                <!--                 <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div> -->
+                <!-- 网易云跟帖 评论框 end -->
+                <!--                 {% endif %} -->
+
+                <!--   gitalk       -->
+                {% if site.gitalk %}
+                <div class="comment">
+                    {% include comments.html %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Side Catalog Container -->
+            {% if page.catalog %}
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                {% include featured-tags.html bottom=true %}
+
+                <!-- Friends Blog -->
+                {% include friends.html %}
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+{% if page.mathjax %}
+{% include mathjax_support.html %}
+{% endif %}
+
+{% if site.anchorjs %}
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js", function () {
+        anchors.options = {
+            visible: 'always',
+            placement: 'right',
+            icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link {
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top: -0.1em;
+        }
+    }
+</style>
+{% endif %}
