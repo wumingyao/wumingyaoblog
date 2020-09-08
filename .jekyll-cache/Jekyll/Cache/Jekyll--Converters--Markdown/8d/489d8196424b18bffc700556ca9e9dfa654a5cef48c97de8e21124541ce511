@@ -1,0 +1,67 @@
+I"6
+<h3 id="1安装python环境">1、安装python环境</h3>
+
+<p>(1)下载python3.tar.xz: wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz.xz</p>
+
+<p>(2)解压成.tar: xz -d Python-3.5.2.tar.xz</p>
+
+<p>(3)解压tar包：tar -xvzf Python-3.5.2.tar</p>
+
+<p>(4)进入Python-3.5.2目录</p>
+
+<p>(5)编译：./configure –prefix=/usr/local/python3 –enable-shared</p>
+
+<p>(6)安装：make &amp;&amp; make install</p>
+
+<p>(7)Python3创建软链接：ln -s /usr/local/python3/bin/python3.5 /usr/bin/python3</p>
+
+<p>(8)Pip3创建软链接：ln -s /usr/local/python3/bin/pip3.5 /usr/bin/pip3</p>
+
+<p>注：python编译错误：Ignoring ensurepip failure: pip 8.1.1 requires SSL/TLS</p>
+
+<p>原因是系统中少了openssl-devel包，执行以下命令：</p>
+
+<p>sudo apt-get install libssl-dev</p>
+
+<p>sudo apt-get install openssl</p>
+
+<h3 id="2安装项目依赖包">2、安装项目依赖包</h3>
+
+<p>(1)导出项目所需的包到requirement.txt中：pip3 freeze &gt; requirements.txt</p>
+
+<p>(2)安装：pip3 install –ignore-installed  -r requirements.txt -i http://pypi.douban.com/simple/ –trusted-host pypi.douban.com</p>
+
+<p>注：安装的时候报错：subprocess.CalledProcessError: Command ‘(‘lsb_release’, ‘-a’)’ returned non-zero exit status 1.</p>
+
+<p>解决：sudo rm /usr/bin/lsb_release</p>
+
+<p>注：pip install pycurl “Error: Could not run curl-config: [Errno 2] No such file or directory”</p>
+
+<p>解决：sudo apt-get install libcurl4-openssl-dev</p>
+
+<h3 id="3打包django项目">3、打包django项目：</h3>
+
+<p>(1)安装pyinstaller：pip3 install pyinstaller</p>
+
+<p>(2) pyinstaller -F manage.py –hidden-import rest_framework.authentication –hidden-import rest_framework.permissions  –hidden-import rest_framework.parsers –hidden-import rest_framework.negotiation –hidden-import rest_framework.metadata  –hidden-import  rest_framework.apps  –hidden-import  corsheaders –hidden-import  corsheaders.middleware</p>
+
+<p>(3)执行：nohup ./manage runserver 0.0.0.0:8000 &gt;RunInfo.log &gt;&amp;1 &amp;</p>
+
+<p>注: [Errno 2] No such file or directory: ‘/tmp/_MEImHg8uh/django/contrib/auth/password_validation.pyc’</p>
+
+<p>解决：django 版本固定到 2.0</p>
+
+<p>注：权限不足</p>
+
+<p>解决：chmod +x manage</p>
+
+<p>注：Traceback (most recent call last):</p>
+
+<p>File “/usr/lib/command-not-found”, line 27, in <module></module></p>
+
+<p>from CommandNotFound.util import crash_guard</p>
+
+<p>ImportError: No module named ‘CommandNotFound’</p>
+
+<p>解决：将python3加入环境变量，并且执行source /etc/profile.</p>
+:ET

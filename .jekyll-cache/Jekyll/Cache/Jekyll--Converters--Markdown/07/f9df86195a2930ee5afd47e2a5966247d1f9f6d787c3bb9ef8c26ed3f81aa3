@@ -1,0 +1,106 @@
+I"� <h2 id="主要内容">主要内容</h2>
+<ul>
+  <li><a href="#p1">一、Reviewer1 Report</a></li>
+  <li><a href="#p2">二、Reviewer2 Report</a></li>
+  <li><a href="#p3">三、Reviewer3 Report</a></li>
+  <li><a href="#p4">四、Reviewer4 Report</a></li>
+  <li><a href="#p5">五、修订要求</a></li>
+  <li><a href="#p6">六、修订计划</a></li>
+</ul>
+
+<h2 id="正文">正文</h2>
+
+<h3 id="一reviewer1-report"><span id="p1">一、Reviewer1 Report</span></h3>
+<p>Reviewer 1(accepted):<a href="https://susy.mdpi.com/user/manuscripts/review/12934574?report=7890458">Review Report (Round 1)</a>
+<img src="../../../../../../img/in-post/2020.07/23/figure 1.jpg" alt="Figure 1" /></p>
+
+<h3 id="二reviewer2-report"><span id="p2">二、Reviewer2 Report</span></h3>
+<p>Reviewer 2(close to acceptance):<a href="https://susy.mdpi.com/user/manuscripts/review/12935551?report=7891206">Review Report (Round 1)</a>
+<img src="../../../../../../img/in-post/2020.07/23/figure 2-1.jpg" alt="Figure 2-1" />
+<img src="../../../../../../img/in-post/2020.07/23/figure 2-2.jpg" alt="Figure 2-2" /></p>
+
+<h4 id="要点">要点</h4>
+<ul>
+  <li>1)目前还存在一些拼写错误和英语使用不当的情况。</li>
+  <li>2)希望代码开源，在论文中添加代码下载链接(?原来提交的论文已经添加了代码下载链接了)</li>
+  <li>3)如果能有一节讨论在所提议的技术中处理不确定性的部分，那么这篇论文将会引起人们的兴趣。例如：突发状况、观测噪音。</li>
+  <li>4)方法的空间部分没有明确说明。</li>
+  <li>5)长距离预测，该方法的局限是什么？</li>
+</ul>
+
+<h3 id="三reviewer3-report"><span id="p3">三、Reviewer3 Report</span></h3>
+<p>Reviewer 3:<a href="https://susy.mdpi.com/user/manuscripts/review/12936344?report=7891751">Review Report (Round 1)</a>
+<img src="../../../../../../img/in-post/2020.07/23/figure 3-1.jpg" alt="Figure 3-1" />
+<img src="../../../../../../img/in-post/2020.07/23/figure 3-2.jpg" alt="Figure 3-2" />
+<img src="../../../../../../img/in-post/2020.07/23/figure 3-3.jpg" alt="Figure 3-3" /></p>
+
+<h4 id="要点-1">要点</h4>
+<p><img src="../../../../../../img/in-post/2020.07/23/table 1.jpg" alt="table 1" />
+<img src="../../../../../../img/in-post/2020.07/23/figure 4.jpg" alt="figure 4" /></p>
+<ul>
+  <li>1)有些句子的结构和单词的选择显得很奇怪。</li>
+  <li>2)文献综述应包括有关不同类型的运输大数据（例如，浮动车数据，地铁卡数据等）的更多讨论。</li>
+  <li>3)认为第3节应该是方法论的一部分，而不是它自己的部分。(论文的第三节是关于相关概念和问题的公式定义)</li>
+  <li>4)表1第4行，为什么数字2代表地铁流量$X_t$的属性数？</li>
+</ul>
+
+<p>Considering the fact that the temporal pair-wise relationship along the time axis is also critical  for more accurate forecasting, we focus on explicitly quantifying the difference of the contributions  in the time series.First, we suppose that the relative historical time intervals should be intercepted  into different P temporal channels to handle the temporal dependency. For each channel, in order to  deal with the fine-grained temporal correlations, we further select Q time slices for the different channels via cross-validation.</p>
+
+<ul>
+  <li>5)”temporal pair-wise relationship”这个短语是啥意思？</li>
+  <li>6)请说明如何根据交叉验证确定Q的。(文中Q是每个通道所使用的历史数据的长度，recent=5,day=3,week=2,grid search?)</li>
+  <li>7)如何决定要在模型中包括哪些外部信息？有很多外部属性可供选择（例如，社会经济因素，天气等）</li>
+  <li>8)”larger distribution”指的是什么？(As can be observed in Fig. 6(a), the flows on weekdays display a larger distribution than those on holidays and weekends among most stations due to people’s daily work, while the flows on holidays increase randomly since the coming of the Spring Festival.)</li>
+  <li>9)如何确定卷积内核的大小？</li>
+  <li>10)希望与ST-ARIMA做比较（我们原文中与Arima做了比较）</li>
+  <li>11)在结果部分之后，我想更全面地讨论他们提出的方法的局限性和潜力。例如，它是否可以处理分布更稀疏的数据（例如LBSM数据）？</li>
+  <li>12)结论部分很短，读起来像是快速摘要。它没有强调分析中的关键发现。</li>
+</ul>
+
+<h3 id="四reviewer4-report"><span id="p4">四、Reviewer4 Report</span></h3>
+<p>Reviewer 4(accepted subject to minor revisions):<a href="https://susy.mdpi.com/user/manuscripts/review/12936344?report=7891751">Review Report (Round 1)</a>
+<img src="../../../../../../img/in-post/2020.07/23/figure 5.jpg" alt="Figure 5" /></p>
+
+<h4 id="要点-2">要点</h4>
+<ul>
+  <li>
+    <p>1)我唯一的主要评论是在整个论文中使用了过多的行话，特别是在摘要和导言中。非专业读者很难读完论文的第一部分，也可能不愿意阅读论文的其余部分。我强烈建议作者从摘要和导言中尽可能多地删除行话，让非专家读者更容易理解。一些行话的例子包括
+<img src="../../../../../../img/in-post/2020.07/23/figure 6.jpg" alt="Figure 6" /></p>
+  </li>
+  <li>
+    <p>2)在整篇文章中，作者使用了fow或traffic flow这个词，但是作者没有明确说明他们所说的flow是什么意思，即乘客人数？或者车辆数量？这一点至关重要，因为论文中没有对其进行定义。</p>
+  </li>
+</ul>
+
+<p>The relevant literature denotes a long line of studies for researchers and practitioners in the field   of traffic prediction including crowd flows [4], traffic volume [5], vehicle speed [6, 7], taxi pick-ups  [8], and travel time estimation [9], etc. Many attempts have been made on the traditional time series prediction algorithm for people’s individual trajectory data. Representatively, AutoRegressive Integrated Moving Average (ARIMA) [10] and its variants have been in wide use in traffic forecasting  methodology [11, 12]. Based on the time series estimation method, recent studies have further  suggested spatial relationships [13, 14] and external context data (e.g., weather, events) [15, 16]. Although these studies confirm that prediction can be improved by considering various attached  factors, they are still subject to suffer from complex nonlinear spatial-temporal correlations and show less practicality for fast online services.</p>
+
+<ul>
+  <li>3)line 53:”……considering various attached factors”what factors are the authors referring to?</li>
+  <li>4)“fast online services” , what does this mean? Which online services?</li>
+  <li>5) “……amount of check-in (or check-out) swiping of a specific station……”.what do the authors refer to as“swiping”?</li>
+  <li>6) 图1字体太小</li>
+  <li>7)”improvement of more than 32.88 against the baselines.what is the“32.88”mean? Percent? Points? Please clarify.</li>
+  <li>8)第二节“相关工作”应移到或融合到导言中，这一节提出的许多观点可以纳入导言中，有助于论文的流程。</li>
+</ul>
+
+<p>Essentially, the goal of traffic prediction is to predict a future traffic-related value for a location in a city at a certain timestamp given the historical flow data. In this section, we review the related work on traffic passenger flow forecasting problems.</p>
+
+<ul>
+  <li>9)“… traffic-related value …”what are the values the authors refer to?(例如speed、Traffic flow)</li>
+  <li>10)line 123: replace‘……variants ae widely……’ with ‘……variants are widely……’</li>
+  <li>11)”……past time series recorded……”.time series of what quantities or measurement?(地铁流量)</li>
+  <li>12)图2 请增加文本描述、标签。</li>
+  <li>13)图3-9同上</li>
+  <li>14)调整表三，使之展示在一页上。</li>
+</ul>
+
+<h3 id="五修订要求"><span id="p5">五、修订要求</span></h3>
+<ul>
+  <li>1、10天内上传修改后的文件。</li>
+  <li>2、请提供一封cover letter，逐条解释稿件修改的细节以及对审稿人意见的回复。如果对某些评论无法发表意见请反驳。</li>
+  <li>3、请详细说明已作的修改，注明行号和确切的更改，以便编辑能迅速检查更改。</li>
+</ul>
+
+<h3 id="六修订计划"><span id="p6">六、修订计划</span></h3>
+<p>5天修改+2天交换审查</p>
+:ET

@@ -1,0 +1,57 @@
+I"t<h2 id="主要内容">主要内容</h2>
+<ul>
+  <li><a href="#p1">Additional Details for BERT</a></li>
+  <li><a href="#p2">Detailed Experimental Setup</a></li>
+  <li><a href="#p3">Related Work</a></li>
+  <li><a href="#p4">Bert</a></li>
+  <li><a href="#p5">Experiments</a></li>
+  <li><a href="#p6">Ablation Studies</a></li>
+  <li><a href="#p7"> Conclusion</a></li>
+</ul>
+
+<h2 id="参考论文">参考论文：</h2>
+<p><a href="https://arxiv.org/pdf/1810.04805.pdf">《BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding》</a></p>
+
+<h2 id="正文">正文</h2>
+
+<h3 id="a-additional-details-for-bert"><span id="p1">A Additional Details for BERT</span></h3>
+<h4 id="a1-illustration-of-the-pre-training-tasks">A.1 Illustration of the Pre-training Tasks</h4>
+
+<p><strong>Masked LM and the Masking Procedure</strong> 假设无标签句子是my dog is hairy,在随机mask的过程中，选择了第四个词hairy,则masking 程序可以有如下处理：</p>
+<ul>
+  <li>80%的可能性用[MASK]来代替被mask的词，即my dog is hairy $\rightarrow$ my dog is [MASK]</li>
+  <li>10%的可能用一个随机的单词来替换，即my dog is hairy $\rightarrow$ my dog is apple</li>
+  <li>10%的可能保持该词不变，即my dog is hairy $\rightarrow$ my dog is hairy.这样做的目的是使表达偏向于实际观察到的单词。<font color="red">(啥意思)</font></li>
+</ul>
+
+<p>这个过程的优点是，Transformer编码器不知道它将被要求预测哪些单词，或者哪些单词已被随机单词替换，因此它必须保持每个输入单词的分布式上下文表示。
+<img src="../../../../../../img/in-post/2020.04/21/Figure 1.jpg" alt="Figure 1" />
+Figure 1: Differences in pre-training model architectures. BERT uses a bidirectional Transformer. OpenAI GPT
+uses a left-to-right Transformer. ELMo uses the concatenation of independently trained left-to-right and right-toleft LSTMs to generate features for downstream tasks. Among the three, only BERT representations are jointly
+conditioned on both left and right context in all layers. In addition to the architecture differences, BERT and
+OpenAI GPT are fine-tuning approaches, while ELMo is a feature-based approach.</p>
+
+<p><strong>Next Sentence Prediction</strong> NSP任务描述如下：
+<img src="../../../../../../img/in-post/2020.04/21/Figure 2.jpg" alt="Figure 2" /></p>
+
+<h4 id="a2-pre-training-procedure">A.2 Pre-training Procedure</h4>
+
+<p>为了生成每个训练输入序列，作者从语料库中抽取两段文本，并称之为“句子”，尽管它们通常比单个句子长得多（但也可以更短）。第一句接受A嵌入，第二句接受B嵌入。50%的可能A是B的下一句，50%的可能A是随机的句子，选出两个句子组合后词长度$\leq$512的样本。LM masking是在wordpiece标记化之后应用的，掩蔽率为15%。</p>
+
+<p>作者设置batch_size=256,steps=1000000,epochs=40，所用的语料库超过33亿个词。$lr=le-4,\beta_1=0.9,\beta_2=0.999$，L2权重衰减0.01，学习率在前10000步预热，学习率呈线性衰减。训练损失是真实的下一句和预测的下一句的似然值的均值和。</p>
+
+<h4 id="a3-fine-tuning-procedure">A.3 Fine-tuning Procedure</h4>
+
+<p>对于微调，除了批量大小、学习速率和训练阶段数之外，大多数模型超参数与预训练中的相同。辍学率始终保持在0.1。最佳超参数值是特定于任务的，但在实验中发现，以下参数的设定适用于所有任务：</p>
+<ul>
+  <li>Batch size：16,32</li>
+  <li>Learning rate(Adam)：5e-5,3e-4,2e-5</li>
+  <li>Number of epochs：2,3,4</li>
+</ul>
+
+<h3 id="b-detailed-experimental-setup"><span id="p1">B Detailed Experimental Setup</span></h3>
+<p><img src="../../../../../../img/in-post/2020.04/21/Figure 3.jpg" alt="Figure 3" />
+Figure 3: Illustrations of Fine-tuning BERT on Different Tasks.</p>
+
+<p>使用BETT实现其他NLP任务如Figure 3所示。</p>
+:ET
