@@ -1,4 +1,4 @@
-I"E,<h2 id="主要内容">主要内容</h2>
+I"Y.<h2 id="主要内容">主要内容</h2>
 <ul>
   <li><a href="#Markdown是什么">Markdown是什么</a></li>
   <li><a href="#谁创造了它">谁创造了它</a></li>
@@ -46,16 +46,16 @@
 <p>如果不算<strong>扩展</strong>，Markdown的语法绝对<strong>简单</strong>到让你爱不释手。</p>
 
 <p>Markdown语法主要分为如下几大部分：
-<strong>标题</strong>，<strong>段落</strong>，<strong>区块引用</strong>，<strong>代码区块</strong>，<strong>强调</strong>，<strong>列表</strong>，<strong>分割线</strong>，<strong>链接</strong>，<strong>图片</strong>，<strong>反斜杠 <code class="highlighter-rouge">\</code></strong>，<strong>符号’`‘</strong>。</p>
+<strong>标题</strong>，<strong>段落</strong>，<strong>区块引用</strong>，<strong>代码区块</strong>，<strong>强调</strong>，<strong>列表</strong>，<strong>分割线</strong>，<strong>链接</strong>，<strong>图片</strong>，<strong>反斜杠 <code class="language-plaintext highlighter-rouge">\</code></strong>，<strong>符号’`‘</strong>。</p>
 
 <h4 id="41-标题">4.1 标题</h4>
 <p>两种形式：<br />
-1）使用<code class="highlighter-rouge">=</code>和<code class="highlighter-rouge">-</code>标记一级和二级标题。</p>
+1）使用<code class="language-plaintext highlighter-rouge">=</code>和<code class="language-plaintext highlighter-rouge">-</code>标记一级和二级标题。</p>
 <blockquote>
   <p>一级标题 <br />
-<code class="highlighter-rouge">=========</code> <br />
+<code class="language-plaintext highlighter-rouge">=========</code> <br />
 二级标题  <br />
-<code class="highlighter-rouge">---------</code></p>
+<code class="language-plaintext highlighter-rouge">---------</code></p>
 </blockquote>
 
 <p>效果：</p>
@@ -65,7 +65,7 @@
 ———</p>
 </blockquote>
 
-<p>2）使用<code class="highlighter-rouge">#</code>，可表示1-6级标题。</p>
+<p>2）使用<code class="language-plaintext highlighter-rouge">#</code>，可表示1-6级标题。</p>
 <blockquote>
   <p># 一级标题 <br />
 ## 二级标题 <br />
@@ -89,7 +89,7 @@
 <p>段落的前后要有空行，所谓的空行是指没有文字内容。若想在段内强制换行的方式是使用<strong>两个以上</strong>空格加上回车（引用中换行省略回车）。</p>
 
 <h4 id="43-区块引用">4.3 区块引用</h4>
-<p>在段落的每行或者只在第一行使用符号<code class="highlighter-rouge">&gt;</code>,还可使用多个嵌套引用，如：</p>
+<p>在段落的每行或者只在第一行使用符号<code class="language-plaintext highlighter-rouge">&gt;</code>,还可使用多个嵌套引用，如：</p>
 <blockquote>
   <p>&gt; 区块引用<br />
 &gt;&gt; 嵌套引用</p>
@@ -114,7 +114,7 @@
 
 <p>代码区块：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -127,7 +127,7 @@
 <p><strong>注意</strong>:需要和普通段落之间存在空行。</p>
 
 <h4 id="45-强调">4.5 强调</h4>
-<p>在强调内容两侧分别加上<code class="highlighter-rouge">*</code>或者<code class="highlighter-rouge">_</code>，如：</p>
+<p>在强调内容两侧分别加上<code class="language-plaintext highlighter-rouge">*</code>或者<code class="language-plaintext highlighter-rouge">_</code>，如：</p>
 <blockquote>
   <p>*斜体*，_斜体_  <br />
 **粗体**，__粗体__</p>
@@ -140,7 +140,7 @@
 </blockquote>
 
 <h4 id="46-列表">4.6 列表</h4>
-<p>使用<code class="highlighter-rouge">·</code>、<code class="highlighter-rouge">+</code>、或<code class="highlighter-rouge">-</code>标记无序列表，如：</p>
+<p>使用<code class="language-plaintext highlighter-rouge">·</code>、<code class="language-plaintext highlighter-rouge">+</code>、或<code class="language-plaintext highlighter-rouge">-</code>标记无序列表，如：</p>
 <blockquote>
   <p>-（+*） 第一项
 -（+*） 第二项
@@ -158,7 +158,7 @@
   </ul>
 </blockquote>
 
-<p>有序列表的标记方式是将上述的符号换成数字,并辅以<code class="highlighter-rouge">.</code>，如：</p>
+<p>有序列表的标记方式是将上述的符号换成数字,并辅以<code class="language-plaintext highlighter-rouge">.</code>，如：</p>
 <blockquote>
   <p>1 . 第一项 <br />
 2 . 第二项  <br />
@@ -175,7 +175,7 @@
 </blockquote>
 
 <h4 id="47-分割线">4.7 分割线</h4>
-<p>分割线最常使用就是三个或以上<code class="highlighter-rouge">*</code>，还可以使用<code class="highlighter-rouge">-</code>和<code class="highlighter-rouge">_</code>。</p>
+<p>分割线最常使用就是三个或以上<code class="language-plaintext highlighter-rouge">*</code>，还可以使用<code class="language-plaintext highlighter-rouge">-</code>和<code class="language-plaintext highlighter-rouge">_</code>。</p>
 
 <h4 id="48-链接">4.8 链接</h4>
 <p>链接可以由两种形式生成：<strong>行内式</strong>和<strong>参考式</strong>。  <br />
@@ -203,11 +203,11 @@
 <a href="https:://github.com/wumingyao/Markdown" title="Markdown">wumingyao的Markdown库2</a></p>
 </blockquote>
 
-<p><strong>注意</strong>：上述的<code class="highlighter-rouge">[1]:https:://github.com/wumingyao/Markdown "Markdown"</code>不出现在区块中。</p>
+<p><strong>注意</strong>：上述的<code class="language-plaintext highlighter-rouge">[1]:https:://github.com/wumingyao/Markdown "Markdown"</code>不出现在区块中。</p>
 
 <h4 id="49-图片">4.9 图片</h4>
-<p>添加图片的形式和链接相似，只需在链接的基础上前方加一个<code class="highlighter-rouge">！</code>。</p>
-<h4 id="410-反斜杠">4.10 反斜杠<code class="highlighter-rouge">\</code></h4>
+<p>添加图片的形式和链接相似，只需在链接的基础上前方加一个<code class="language-plaintext highlighter-rouge">！</code>。</p>
+<h4 id="410-反斜杠">4.10 反斜杠<code class="language-plaintext highlighter-rouge">\</code></h4>
 <p>相当于<strong>反转义</strong>作用。使符号成为普通符号。</p>
 <h4 id="411-符号">4.11 符号’`’</h4>
 <p>起到标记作用。如：</p>
@@ -217,7 +217,7 @@
 
 <p>效果：</p>
 <blockquote>
-  <p><code class="highlighter-rouge">ctrl+a</code></p>
+  <p><code class="language-plaintext highlighter-rouge">ctrl+a</code></p>
 </blockquote>
 
 <h4 id="谁在用">谁在用？</h4>
@@ -234,7 +234,7 @@
 
 <h4 id="尝试一下">尝试一下</h4>
 <ul>
-  <li><strong>Chrome</strong>下的插件诸如<code class="highlighter-rouge">stackedit</code>与<code class="highlighter-rouge">markdown-here</code>等非常方便，也不用担心平台受限。</li>
+  <li><strong>Chrome</strong>下的插件诸如<code class="language-plaintext highlighter-rouge">stackedit</code>与<code class="language-plaintext highlighter-rouge">markdown-here</code>等非常方便，也不用担心平台受限。</li>
   <li><strong>在线</strong>的dillinger.io评价也不错</li>
   <li><strong>Windowns</strong>下的MarkdownPad也用过，不过免费版的体验不是很好。</li>
   <li><strong>Mac</strong>下的Mou是国人贡献的，口碑很好。</li>
@@ -253,7 +253,7 @@
 <h4 id="其它">其它</h4>
 <p>列表的使用(非traditonal markdown)：</p>
 
-<p>用<code class="highlighter-rouge">|</code>表示表格纵向边界，表头和表内容用<code class="highlighter-rouge">-</code>隔开，并可用<code class="highlighter-rouge">:</code>进行对齐设置，两边都有<code class="highlighter-rouge">:</code>则表示居中，若不加<code class="highlighter-rouge">:</code>则默认左对齐。</p>
+<p>用<code class="language-plaintext highlighter-rouge">|</code>表示表格纵向边界，表头和表内容用<code class="language-plaintext highlighter-rouge">-</code>隔开，并可用<code class="language-plaintext highlighter-rouge">:</code>进行对齐设置，两边都有<code class="language-plaintext highlighter-rouge">:</code>则表示居中，若不加<code class="language-plaintext highlighter-rouge">:</code>则默认左对齐。</p>
 
 <table>
   <thead>
