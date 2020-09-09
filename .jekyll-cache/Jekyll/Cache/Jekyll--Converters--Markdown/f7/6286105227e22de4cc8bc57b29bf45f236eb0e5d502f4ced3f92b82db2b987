@@ -1,4 +1,4 @@
-I"�1<h2 id="主要内容">主要内容</h2>
+I"gG<h2 id="主要内容">主要内容</h2>
 <ul>
   <li><a href="#p1">ABSTRACT</a></li>
   <li><a href="#p2">一、INTRODUCTION</a></li>
@@ -155,7 +155,109 @@ $Z_{CF}和Z_{CT}$,一致性约束$\mathscr{L}_c$用于增强 $Z_{CF}$和$Z_{CT}$
 <p>其中$W_T\in\mathbb{R}^{h’\times h}$是权重矩阵，$b_T\in\mathbb{R}^{h’\times 1}$是偏移向量，同理可得
 $w_C^i,w_F^i$。通过标准化$w_T^i,w_C^i,W_F^i$可得最终的权重</p>
 
-\[\alpha_T^i=softmax(w_T^i)=\frac{exp{w_T^i}}{exp{w_T^i}+exp{w_C^i}+exp{w_F^i}}\tag{9}\]
+\[\alpha_T^i=softmax(w_T^i)=\frac{exp{(w_T^i)}}{exp{(w_T^i)}+exp{(w_C^i)}+exp{(w_F^i)}}\tag{9}\]
+
+<p>同理可得，$alpha_C^i=softmax(w_C^i)$和$\alpha_F^i=softmax(w_F^i)$。
+对于所有的n个结点，可以得到$\alpha_t=[\alpha_T^i],\alpha_c=[\alpha_C^i],\alpha_f=[\alpha_F^i]\in\mathbb{R}^{n\times 1}$
+,标记$\alpha_T=diag(\alpha_t),\alpha_C=diag(\alpha_c),\alpha_F=diag(\alpha_f)$。
+然后结合这三个嵌入获得最终的嵌入：</p>
+
+\[Z=\alpha_T\cdot Z_T+\alpha_C\cdot Z_C+\alpha_F\cdot Z_F\tag{10}\]
+
+<h4 id="34-objective-function">3.4 Objective Function</h4>
+<h5 id="341-consistency-constraint">3.4.1 Consistency Constraint</h5>
+<p>对于两个Common-GCN的输出嵌入$Z_{CT}$和$Z_{CF}$，即使Common-GCN有共享的权重
+矩阵，为了进一步增强他们的共同信息，作者仍然设计了一个一致性约束。</p>
+
+<p>首先，使用$L_2-normalization$来标准化嵌入矩阵为$Z_{CTnor}$和$Z_{CFnor}$。
+然后，两个标准矩阵可以用来捕捉n个结点的相似性为$S_T$和$S_F$:</p>
+
+\[S_T=Z_{CTnor}\cdot Z_{CTnor}^T\]
+
+\[S_F=Z_{CFnor}\cdot Z_{CFnor}^T\tag{11}\]
+
+<p>一致性意味着两个相似性矩阵应该相似，这便有了以下约束：</p>
+
+\[\mathscr{L}_c=||S_T-S_F||^2_F\tag{12}\]
+
+<h5 id="342-disparity-constraint">3.4.2 Disparity Constraint</h5>
+<p>因为嵌入$Z_T$和$Z_{CF}$是从图$G_t=(A_t,X_t)$中学习的，为了确保它们捕捉到不同的
+信息，作者应用了Hilbert-Schmidt独立性标准(HSIC)用来区分这两者的独立性。</p>
+
+\[HSIC(Z_T,Z_{CT})=(n-1)^{-2}tr(RK_TRK_{CT})\tag{13}\]
+
+<p>其中，$K_T$和$K_{CT}$是带有$k_{T,ij}=k_T(z_T^i,Z_T^j)$和$K_{CT,ij}=k_{CT}(z_{CT}^i,z_{CT}^j)$。
+,$R=I-/frac{1}{n}ee^T$，其中$I$是单位矩阵，$e$是一个all-one column vector。</p>
+
+<p>对于$HSIC(Z_F,Z_{CF})=(n-1)^{-2}tr(RK_FRK_{CF})\tag{14}$</p>
+
+<p>disparity constraint可以计算为</p>
+
+\[\mathscr{L}_d=HSIC(Z_T,Z_{CT})+HSIC(Z_F,Z_{CF})\tag(15)\]
+
+<h5 id="343-optimization-objective">3.4.3 Optimization Objective.</h5>
+<p>在$E_q$中使用输出嵌入$Z$，对于半监督多分类任务使用一个线性转换器和softmax函数。
+标记n个结点类预测为$\hat{Y}=[\hat{y}<em>{ic}]\in\mathbb{R}^{n\times C}$，
+其中，$\hat{y}</em>{ic}$是结点$i$对于$c$个类的概率。</p>
+
+\[\hat{Y}=softmax(W\cdot Z+b)\tag{16}\]
+
+<p>其中，$softmax(x)=\frac{exp(x)}{\sum_{c=1}^{C}exp(x_c)}$实际上是所有类的规范器。</p>
+
+<p>假设训练集是$L$,对于每个$l\in L$的实际标签为$Y_l$,预测标签为$\hat{Y}_l$。
+然后，将所有训练节点上的节点分类的交叉熵损失表示为</p>
+
+\[\mathscr{L}_t=-\sum_{l\in L}\sum_{i=1}^CY_lln\hat{Y}_l\tag{17}\]
+
+<p>结合节点分类任务和约束，我们具有以下总体目标函数：</p>
+
+\[\mathscr{L}=\mathscr{L}_t+\gamma\mathscr{L}_c+\beta\mathscr{L}_d\tag{18}\]
+
+<p>其中$\gamma$和$\beta$是一致性和差异性的参数。在标记数据的指导下，我们可以通过反向传播优化建议的模型，并学习节点的嵌入以进行分类。</p>
 
 <h3 id="四experiment"><span id="p5">四、EXPERIMENT</span></h3>
+<h4 id="experimental-setup">Experimental Setup</h4>
+<h5 id="datasets">Datasets</h5>
+<p><img src="../../../../../../img/in-post/2020.09/04/Table 1.jpg" alt="Table 1" />
+AM-GCN在六个数据集上进行验证。</p>
+<ul>
+  <li>
+    <p>Citeseer
+Citeseer是一个研究论文引文网络，其中节点是出版物，边是引文链接。 节点属性是论文的词袋表示，并且所有节点都分为六个区域。</p>
+  </li>
+  <li>
+    <p>UAI2010
+使用了具有3067个节点和56622个边的数据集，该数据集已在图卷积网络中进行了测试。</p>
+  </li>
+  <li>
+    <p>ACM
+该网络是从ACM数据集中提取的，其中节点代表论文，并且如果两篇论文的作者相同，则它们之间会有一条边。 所有论文分为3类（数据库，无线通信，数据挖掘）。 这些功能是纸质关键词的词袋表示。</p>
+  </li>
+  <li>
+    <p>BlogCatalog
+这是一个由BlogCatalog网站与博客作者及其社交关系组成的社交网络。 节点属性由用户简要表的关键字构成，标签表示作者提供的主题类别，所有节点分为6类。</p>
+  </li>
+  <li>
+    <p>Flickr
+Flickr是一个图像和视频托管网站，用户可以在其中通过照片共享进行交互。 它是一个社交网络，其中节点代表用户，边缘代表他们的关系，并且根据用户的兴趣组将所有节点分为9类。</p>
+  </li>
+  <li>
+    <p>CoraFull
+这是著名的引文网络Cora数据集的较大版本，其中，节点表示论文，边表示其引用，并根据论文主题对节点进行标记。</p>
+  </li>
+</ul>
+
+<h5 id="baselines">Baselines</h5>
+<ul>
+  <li>DeepWalk是一种网络嵌入方法，它使用随机游走来获取上下文信息，并使用skipgram算法来学习网络表示。</li>
+  <li>LINE是一种大规模的网络嵌入方法，可分别保留网络的一阶和二阶邻近性。</li>
+  <li>Chebyshev是一种基于GCN利用Chebyshev过滤器的方法。</li>
+  <li>GCN是一种半监督图卷积网络模型，该模型通过汇总来自邻居的信息来学习节点表示。</li>
+  <li>kNN-GCN为了进行比较，而不是传统的拓扑图中，我们使用根据特征矩阵计算的稀疏k最近邻图作为GCN的输入图，并将其表示为kNN-GCN。</li>
+  <li>GAT是使用注意力机制来聚合节点特征的图神经网络模型。</li>
+  <li>DEMO-Net是用于节点分类的特定于度的图神经网络。</li>
+  <li>MixHop是一种基于GCN的方法，它在一个图卷积层中混合了高阶邻居的特征表示。</li>
+</ul>
+
+<h5 id="parameters-setting">Parameters Setting</h5>
 :ET
