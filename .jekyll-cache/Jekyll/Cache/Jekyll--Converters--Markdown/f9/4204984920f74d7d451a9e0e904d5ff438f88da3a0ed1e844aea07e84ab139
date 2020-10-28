@@ -1,4 +1,4 @@
-I"�'<h2 id="主要内容">主要内容</h2>
+I"P(<h2 id="主要内容">主要内容</h2>
 <ul>
   <li><a href="#p1">一、Introduction</a></li>
   <li><a href="#p2">二、data_process</a></li>
@@ -133,6 +133,11 @@
       <td>行政区划</td>
       <td>varchar(6)</td>
       <td>该条交通事故归属行政区的编码，长度为6，范围370900~370911</td>
+    </tr>
+    <tr>
+      <td>事故发生时间</td>
+      <td>date</td>
+      <td>时间格式为 2018-06-28 08:10:00.0</td>
     </tr>
     <tr>
       <td>星期</td>
