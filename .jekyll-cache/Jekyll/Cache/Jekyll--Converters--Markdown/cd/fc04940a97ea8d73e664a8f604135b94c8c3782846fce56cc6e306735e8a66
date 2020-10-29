@@ -1,0 +1,239 @@
+I"v<h2 id="主要内容">主要内容</h2>
+<ul>
+  <li><a href="#p1">一、事故数据采集</a></li>
+  <li><a href="#p2">二、数据处理</a></li>
+  <li><a href="#p3">三、现有研究</a></li>
+  <li><a href="#p4">四、展望</a></li>
+</ul>
+
+<h3 id="一事故数据采集"><span id="p1">一、事故数据采集</span></h3>
+<p>从<a href="http://pems.dot.ca.gov/">加州官网</a>上爬取2017/01/01-2017/06/30的加州所有事故数据。
+<img src="../../../../../../img/in-post/2020.10/25/Figure 1.jpg" alt="Figure 1" /></p>
+
+<p>事故数据表说明</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>列名</th>
+      <th>类型</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Incident_ID</td>
+      <td>integer</td>
+      <td>An integer value that uniquely identifies this incident within PeMS.</td>
+    </tr>
+    <tr>
+      <td>CC_Code</td>
+      <td>varchar</td>
+      <td>未知</td>
+    </tr>
+    <tr>
+      <td>Incident_Number</td>
+      <td>integer</td>
+      <td>an integer incident number,例如2017/04/01发生的事故，该项为2017041</td>
+    </tr>
+    <tr>
+      <td>Timestamp</td>
+      <td>DateTime</td>
+      <td>Date and time of the incident with a format of MM/DD/YYYY HH24:MI:SS. For example 9/3/2013 13:58, indicating 9/3/2013 1:58 PM.</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>Text</td>
+      <td>A textual description of the incident.</td>
+    </tr>
+    <tr>
+      <td>Location</td>
+      <td>Text</td>
+      <td>A textual description of the location.</td>
+    </tr>
+    <tr>
+      <td>Area</td>
+      <td>Text</td>
+      <td>A textual description of the Area. For example, East Sac.</td>
+    </tr>
+    <tr>
+      <td>Zoom_Map</td>
+      <td>varchar</td>
+      <td>未知，基本都是nan</td>
+    </tr>
+    <tr>
+      <td>TB_xy</td>
+      <td>无</td>
+      <td>Lat/lon in state plane.基本为nan</td>
+    </tr>
+    <tr>
+      <td>Latitude</td>
+      <td>float</td>
+      <td>纬度</td>
+    </tr>
+    <tr>
+      <td>Longtitude</td>
+      <td>float</td>
+      <td>经度</td>
+    </tr>
+    <tr>
+      <td>District</td>
+      <td>integer</td>
+      <td>the District number，D1-Northwest,D2-Northeast,D3-North Central,D4-Bay Area,D5-South Central,D6-South Central,D7-LA/Ventura,D8-San Bernardino/Riverside,D9-Eastern Sierra,D10-Central,D11-San Diego/Imperial,D12-Orange County</td>
+    </tr>
+    <tr>
+      <td>Country_FIPS_ID</td>
+      <td>Integer</td>
+      <td>The FIPS County identifier.</td>
+    </tr>
+    <tr>
+      <td>City_FIPS_ID</td>
+      <td>Integer</td>
+      <td>The FIPS City identifier.</td>
+    </tr>
+    <tr>
+      <td>Freeway_Number</td>
+      <td>Integer</td>
+      <td>Freeway Number,事故所在的公路编号</td>
+    </tr>
+    <tr>
+      <td>Freeway_Direction</td>
+      <td>Char</td>
+      <td>A string indicating the freeway direction,事故所在的公路方向.</td>
+    </tr>
+    <tr>
+      <td>State_Postmile</td>
+      <td>varchar</td>
+      <td>State Postmile</td>
+    </tr>
+    <tr>
+      <td>Absolute_Postmile</td>
+      <td>varchar</td>
+      <td>Absolute Postmile</td>
+    </tr>
+    <tr>
+      <td>Severity</td>
+      <td>Integer</td>
+      <td>严重等级，但基本都是nan</td>
+    </tr>
+    <tr>
+      <td>Duration</td>
+      <td>float</td>
+      <td>Duration minutes，事故持续时间</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="二事故处理"><span id="p2">二、事故处理</span></h3>
+<p>本节将描述如果筛选出Bay Area事故数据以及将每个事故发生地所对应的sensor。</p>
+
+<h4 id="bay-area-的sensor-分布">Bay Area 的sensor 分布</h4>
+<p><img src="../../../../../../img/in-post/2020.10/25/Figure 2.jpg" alt="Figure 2" /></p>
+
+<p>Bay Area 的sensor分布在路网上，即一条公路上有很多sensor，每个sensor覆盖公路的一段长度，因此我们可以先找出事故发生的公路上sensor,
+然后根据事故距离这些sensor的距离，找出距离该事故最近的sensor,该sensor就是受该事故直接影响的sensor。</p>
+
+<h4 id="生成incident_pems-bay">生成incident_pems-bay</h4>
+<ul>
+  <li>1.遍历事故数据集</li>
+  <li>2.确定事故发生的公路</li>
+  <li>3.找出在该公路上的sensors，遍历sensors</li>
+  <li>4.找出离该事故最近的sensor</li>
+</ul>
+
+<p><img src="../../../../../../img/in-post/2020.10/25/Figure 3.jpg" alt="Figure 3" /></p>
+
+<h3 id="三sensor属性"><span id="p3">三、sensor属性</span></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>列名</th>
+      <th>类型</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ID</td>
+      <td>integer</td>
+      <td>An integer value that uniquely indenties the Station Metadata. Use this value to ‘join’ other clearinghouse files that contain Station Metadata</td>
+    </tr>
+    <tr>
+      <td>Freeway</td>
+      <td>integer</td>
+      <td>Freeway Number,sensor所在的公路编号，每个sensor监测覆盖公路的一段(50~3km)</td>
+    </tr>
+    <tr>
+      <td>Freeway_Direction</td>
+      <td>varchar</td>
+      <td>A string indicating the freeway direction.</td>
+    </tr>
+    <tr>
+      <td>County_Identifier</td>
+      <td>integer</td>
+      <td>The unique number that identifies the county that contains this census station within PeMS.</td>
+    </tr>
+    <tr>
+      <td>City</td>
+      <td>varchar</td>
+      <td>City</td>
+    </tr>
+    <tr>
+      <td>State_Postmile</td>
+      <td>varchar</td>
+      <td>State Postmile</td>
+    </tr>
+    <tr>
+      <td>Absolute_Postmile</td>
+      <td>varchar</td>
+      <td>Absolute Postmile</td>
+    </tr>
+    <tr>
+      <td>Latitude</td>
+      <td>float</td>
+      <td>Latitude</td>
+    </tr>
+    <tr>
+      <td>Longitude</td>
+      <td>float</td>
+      <td>Longitude</td>
+    </tr>
+    <tr>
+      <td>Length</td>
+      <td>float</td>
+      <td>每个sensor监测覆盖公路的一段(50~3km)</td>
+    </tr>
+    <tr>
+      <td>Type</td>
+      <td> </td>
+      <td>Type</td>
+    </tr>
+    <tr>
+      <td>Lanes</td>
+      <td>int</td>
+      <td>车道数</td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>varchar</td>
+      <td>Name</td>
+    </tr>
+    <tr>
+      <td>User IDs[1-4]</td>
+      <td>integer</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="sensor的poi">sensor的POI</h4>
+<p>收集sensor周围的POI
+|列名|类型|描述|
+|—-|—-|—-|
+|ID|integer|An integer value that uniquely indenties the Station Metadata. Use this value to ‘join’ other clearinghouse files that contain Station Metadata|
+|Amenity|bool|A POI annotation which indicates presence of amenity in a nearby location.|
+|Bump|bool|A POI annotation which indicates presence of speed bump or hump in a nearby location.|
+|Crossing|bool|A POI annotation which indicates presence of crossing in a nearby location.|
+|Give_Way|bool||</p>
+:ET

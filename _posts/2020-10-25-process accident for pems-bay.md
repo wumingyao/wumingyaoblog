@@ -61,3 +61,41 @@ Bay Area 的sensor分布在路网上，即一条公路上有很多sensor，每�
 * 4.找出离该事故最近的sensor
 
 ![Figure 3](../../../../../../img/in-post/2020.10/25/Figure 3.jpg)
+
+### <span id="p3">三、sensor属性</span>
+
+|列名|类型|描述|
+|----|----|----|
+|ID|integer|An integer value that uniquely indenties the Station Metadata. Use this value to 'join' other clearinghouse files that contain Station Metadata|
+|Freeway|integer|Freeway Number,sensor所在的公路编号，每个sensor监测覆盖公路的一段(50~3km)|
+|Freeway_Direction|varchar|A string indicating the freeway direction.|
+|County_Identifier|integer|The unique number that identifies the county that contains this census station within PeMS.|
+|City|varchar|City|
+|State_Postmile|varchar|State Postmile|
+|Absolute_Postmile|varchar|Absolute Postmile|
+|Latitude|float|Latitude|
+|Longitude|float|Longitude|
+|Length|float|每个sensor监测覆盖公路的一段(50~3km)|
+|Type||Type|
+|Lanes|int|车道数|
+|Name|varchar|Name|
+|User IDs[1-4]|integer||
+
+#### sensor的POI
+收集sensor周围的POI
+|列名|类型|描述|
+|----|----|----|
+|ID|integer|An integer value that uniquely indenties the Station Metadata. Use this value to 'join' other clearinghouse files that contain Station Metadata|
+|Amenity|bool|A POI annotation which indicates presence of amenity in a nearby location.|
+|Bump|bool|A POI annotation which indicates presence of speed bump or hump in a nearby location.|
+|Crossing|bool|A POI annotation which indicates presence of crossing in a nearby location.|
+|Give_Way|bool|A POI annotation which indicates presence of give_way in a nearby location.|
+|Junction|bool|A POI annotation which indicates presence of junction in a nearby location.|
+|No_Exit|bool|A POI annotation which indicates presence of no_exit in a nearby location.|
+|Railway|bool|A POI annotation which indicates presence of railway in a nearby location.|
+|Roundabout|bool|A POI annotation which indicates presence of roundabout in a nearby location.|
+|Station|bool|A POI annotation which indicates presence of station in a nearby location.|
+|Stop|bool|A POI annotation which indicates presence of stop in a nearby location.|
+|Traffic_Calming|bool|A POI annotation which indicates presence of traffic_calming in a nearby location.|
+|Traffic_Signal|bool|A POI annotation which indicates presence of traffic_signal in a nearby location.|
+|Turning_Loop|bool|A POI annotation which indicates presence of turning_loop in a nearby location.|
