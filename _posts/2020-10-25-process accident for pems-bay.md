@@ -83,6 +83,7 @@ Bay Area 的sensor分布在路网上，即一条公路上有很多sensor，每�
 
 #### sensor的POI
 收集sensor周围的POI
+
 |列名|类型|描述|
 |----|----|----|
 |ID|integer|An integer value that uniquely indenties the Station Metadata. Use this value to 'join' other clearinghouse files that contain Station Metadata|
