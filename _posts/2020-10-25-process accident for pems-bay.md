@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Accident for pems-bay"
-subtitle:   "构建pems-bay事故数据集"
+subtitle:   "pems-bay数据增强"
 date:       2020-10-25
 author:     "wumingyao"
 header-img: "img/in-post/2020.10/25/bg.jpg"
