@@ -70,8 +70,8 @@ Bay Area 的sensor分布在路网上，即一条公路上有很多sensor，每�
 |Freeway_Direction|varchar|A string indicating the freeway direction.|
 |County_Identifier|integer|The unique number that identifies the county that contains this census station within PeMS.|
 |City|varchar|City|
-|State_Postmile|varchar|State Postmile|
-|Absolute_Postmile|varchar|Absolute Postmile|
+|State_Postmile|varchar|Position of detector station using the California postmile system.|
+|Absolute_Postmile|Absolute position of detector station.|
 |Latitude|float|Latitude|
 |Longitude|float|Longitude|
 |Length|float|每个sensor监测覆盖公路的一段(50~3km)|
