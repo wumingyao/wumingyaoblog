@@ -1,0 +1,122 @@
+I"�(<h2 id="主要内容">主要内容</h2>
+<ul>
+  <li><a href="#p1">ABSTRACT</a></li>
+  <li><a href="#p2">一、INTRODUCTION</a></li>
+  <li><a href="#p3">二、METHODOLOGY</a></li>
+  <li><a href="#p4">三、Minute-level Real-time Traffic Accident Forecasting</a></li>
+  <li><a href="#p5">四、EXPERIMENT</a></li>
+</ul>
+
+<h2 id="参考论文">参考论文：</h2>
+<p><a href="https://arxiv.org/pdf/1707.01926.pdf">《DIFFUSION CONVOLUTIONAL RECURRENT NEURAL NETWORK: DATA-DRIVEN TRAFFIC FORECASTING》</a></p>
+
+<h2 id="正文">正文</h2>
+
+<h3 id="abstract"><span id="p1">ABSTRACT</span></h3>
+<p>时空预测在神经科学、气候和交通运输领域已经有很多应用。在这些学习任务中，交通运输是一个经典的例子。
+这个任务存在如下挑战：
+1)路网上的复杂空间依赖，2)随路况变化的非线性时间动态以及3)长期预测的固有的困难。
+为了解决这些挑战，我们建议将交通流建模为有向图上的扩散过程，并引入扩散卷积递归神经网络（DCRNN），
+这是一种用于交通预测的深度学习框架，在交通流中纳入了时空依赖性。
+具体来说，DCRNN在graph上使用bidirectional random walks来捕捉空间依赖性，
+并使用具有预采样的编码器-解码器体系结构捕获时间相关性。
+我们在两个现实世界的大规模道路网络交通数据集上评估了该框架，并观察到与最新基准相比持续改善了12％-15％。</p>
+<h3 id="一introduction"><span id="p2">一、INTRODUCTION</span></h3>
+<p>时空预测对于在动态环境中运行的学习系统来说是一项至关重要的任务。
+它具有广泛的应用，从自动驾驶汽车的操作到能源和智能电网优化，再到物流和供应链管理。
+在本文中，我们将要学习一个重要的任务：路网上的交通预测，这是智能交通运输系统的关键组件。
+交通预测的目的是在历史交通速度和基础道路网络给定的情况下，预测传感器网络的未来交通速度。</p>
+
+<p>这个任务主要的挑战是复杂的时空依赖和长期预测固有的困难。
+一方面，交通时间序列显示出强大的时间动态。高峰时间或事故等反复发生的事件可能会导致不稳定，从而难以长期预测。
+另一方面，道路网络上的传感器包含复杂而独特的空间相关性。
+图1说明了一个示例。道路1和道路2相关，而道路1和道路3不相关。
+尽管1号和3号道路在欧几里得空间中很近，但它们表现出截然不同的行为。
+而且，未来的交通速度受下游交通的影响要大于上游交通的影响。这意味着交通中的空间结构是非欧几里德和定向的。
+<img src="../../../../../../img/in-post/2020.12/02/Figure 1.jpg" alt="Figure 1" /></p>
+
+<p>交通预测已经被研究了几十年，主要分为两个领域：知识驱动的方法和数据驱动的方法。
+在交通运输和运筹学中，知识驱动的方法通常采用排队论并模拟交通中的用户行为（Cascetta，2013）
+在时间序列社区中，数据驱动方法（例如自回归综合移动平均（ARIMA）模型和卡尔曼滤波）仍然很流行（Liu等人，2011； Lippi等人，2013）。
+但是，简单的时间序列模型通常依赖于平稳性假设，交通数据经常违反这种假设。
+最近，Lv等人开发了用于交通预测的深度学习模型（2015）；Yu等（2017b），但未考虑空间结构。
+Wu＆Tan（2016）和Ma等（2017）使用卷积神经网络（CNN）对空间相关性进行建模，但空间结构在欧几里得空间中（例如2D图像）。
+Bruna et al.（2014），Defferrard等（2016年）研究了图卷积，但仅适用于无向图。</p>
+
+<p>在这项工作中，我们使用有向图表示交通传感器之间的成对空间关系，
+该有向图的节点是传感器，边缘权重表示通过路网距离测量的传感器对之间的接近度。
+我们将交通流的动力学建模为扩散过程，并提出扩散卷积操作以捕获空间依赖性。
+我们进一步提出了扩散卷积递归神经网络（DCRNN），它集成了扩散卷积，序列到序列的体系结构和调度的采样技术。
+现实交通数据集上进行评估时，DCRNN始终在很大程度上领先于最新的交通预测基线。综上所述：</p>
+
+<ul>
+  <li>我们研究交通预测问题，并在有向图上将交通的空间依赖性建模为扩散过程。我们提出了扩散卷积，它具有直观的解释并且可以有效地计算。</li>
+  <li>我们提出了扩散卷积递归神经网络（DCRNN），这是一种整体方法，它使用扩散卷积和序列到序列学习框架以及计划的采样来捕获时间序列之间的时空依赖性。DCRNN不仅限于运输，还可以随时应用于其他时空预测任务。</li>
+  <li>我们在两个大规模的真实世界数据集上进行了广泛的实验，并且所提出的方法相对于最新的基准方法获得了显着改进。
+    <h3 id="二methodology"><span id="p3">二、METHODOLOGY</span></h3>
+    <p>我们将时空交通预测的学习问题形式化，并描述如何使用扩散卷积递归神经网络对依赖结构进行建模。</p>
+    <h4 id="21-traffiic-forecasting-problem">2.1 Traffiic Forecasting Problem</h4>
+    <p>交通预测的目标是根据道路网络上N个相关传感器的先前观测到的交通流量来预测未来的交通速度。
+我们将传感器网络表达为一个带权有向图$\mathcal{G}=(\nu,\varepsilon,W)$，
+其中，$\nu$是结点集$|\nu|=N$,$\varepsilon$是边集，$W\in\mathbb{R}^{N\times N}$是表示节点接近度（例如，其路网距离的函数）的加权邻接矩阵）。
+将$\mathcal{G}$上观察到的交通流作为图信号$X\in\mathbb{R}^{N\times P}$，其中，P是每个结点特征的数量(例如，速度，流量)。
+令$X^{(t)}$表示在时间t观察到的图信号，交通预测问题的目标是学习一个函数$h(\cdot)$,
+该函数将T‘历史图形信号映射到未来的T给定图形$\mathcal{G}$的图形信号：</p>
+  </li>
+</ul>
+
+\[\left[X^{(t-T'+1)},\cdots,X^{(t)};\mathcal{G}\right]\stackrel{h(\cdot)}{\longrightarrow}\left[X^{(t+1)},\cdots,X^{(t+T)}\right]\tag{1}\]
+
+<h4 id="22-spatial-dependency-modeling">2.2 SPATIAL DEPENDENCY MODELING</h4>
+<p>我们通过将交通流与扩散过程相关联来对空间依赖性进行建模，该扩散过程明确捕获了交通动力学的随机性质。
+此扩散过程的特征是在$mathcal{G}$上随机游走，并具有重启概率$\alpha\in\left[0,1\right]$，
+和一个状态转移矩阵$D^{-1}_OW$，这里的$D_O=diag(W1)$是出度对角矩阵，$1\in\mathbb{R}^N$表示所有one vectior。
+在许多步长之后，这样的马尔可夫过程收敛到平稳分布$\mathcal{P}\in\mathbb{R}^{N\times N}$，第i行$\mathcal{P}_{i,:}\in\mathbb{R}^N$
+表示从节点$\nu_i\in\nu$扩散的可能性，因此接近度$w.r.t.$是节点$\nu_i$。
+以下引理为平稳分布提供了一种封闭形式的解决方案。</p>
+
+<p>Lemma 2.1(Teng et al.,2016)扩散过程的平稳分布可以表示为图上无限随机游动的加权组合，并以封闭形式计算：</p>
+
+\[\mathcal{P}=\sum_{k=0}^\infty\alpha(1-\alpha)^k(D^{-1}_OW)^k\tag{2}\]
+
+<p>其中，k是扩散步数。实际上，我们使用扩散过程的有限k步截断并为每个步骤分别可训练的权重。我们还包括反向扩散过程，
+以便双向扩散为模型提供更大的灵活性，以捕获上游和下游流量的影响。</p>
+
+<p>Diffusion Convolution</p>
+
+<p>在图形信号$X\in\mathbb{R}^{N\times P}$和滤波器$f_\theta$上进行扩散卷积运算的定义为：</p>
+
+\[X_{:,p*\mathcal{G}}f_\theta=\sum_{k=0}^{K-1}(\theta_{k,1}(D^{-1}\_OW)^k+\theta_{k,2}(D_I^{-1}W^T)^k)X_{:,p} for p\in\lbrace 1,\cdots,P\rbrace\tag{3}\]
+
+<p>其中，$\theta\in\mathbb{R}^{K\times 2}$是滤波器的参数，而$D_O^{-1}W,D^{-1}_OW^T$分别表示正向和反向扩散过程的转移矩阵。
+通常来说，计算卷积是非常耗时的。然而，如果$\mathcal{G}$是稀疏的，
+等式3可以使用总时间复杂度$O(K|\varepsilon|)\llO(N^2)$地循环稀疏矩阵O(K)被有效地计算</p>
+
+<h3 id="三minute-level-real-time-traffic-accident-forecasting"><span id="p4">三、Minute-level Real-time Traffic Accident Forecasting</span></h3>
+
+<h3 id="四experiment"><span id="p5">四、EXPERIMENT</span></h3>
+<h4 id="experimental-settings">Experimental Settings</h4>
+<p>该任务是学习一个函数$f:\mathbb{R}^{N\times P\times T’}\rightarrow\mathbb{R}^{N\times P\times T}$。
+在该实验中，$T=T’=12$，BGCGRU的层数是2，带有64个隐藏单元。最大跳数$k$设置为3.
+使用Adam优化器进行训练，使用MAE做为监测指标，epochs=100,batch_size=64。
+初始学习率为le-2,每10个epochs衰减率为0.6。</p>
+
+<h4 id="effect-of-the-edge-wise-graph">Effect of the Edge-Wise Graph</h4>
+<p>为了验证edge-wise graph的有效性，将MRA-BGCN与两个变体进行比较：
+1) MRA-BGCN-Identity,该变体忽略边的相关性，并且使用一个单位矩阵来取代边的邻接矩阵。
+从本质上讲，这意味着边不会互相影响，而仅由连接的节点确定。
+2) MRA-BGCN-LineGraph,该变体使用line graph来取代edge-wise graph，line graph忽略了各种边交互模式。
+通过表3可以看处Edge-wise Graph的有效性。直觉是，所提出的Edge-wise Graph考虑了流的连通性和竞争关系，并使模型具有捕获复杂依赖性的能力。
+<img src="../../../../../../img/in-post/2020.08/28/Table 3.jpg" alt="Table 3" /></p>
+
+<h4 id="effect-of-the-multi-range-attention-mechanism">Effect of the Multi-Range Attention Mechanism</h4>
+<p>为了进一步验证multi-range attention 机制的有效性，作者验证了MRA-BGCN和
+使用不同方法来利用多范围信息的两个变体的性能。
+1) BGCN,biocomponent graph convolutional network,该网络忽略多范围信息并使用在给定邻域范围内聚合的表示形式（即仅使用第𝑘层的输出）;
+2)  MR-BGCN, multi-range bicomponent graph convolutional network,该网络通过在每一层中连接表示来利用多范围信息，并认为来自每个邻域范围的信息都做出了同等贡献。
+表4可以看出Multi-Range Attention机制的有效性。</p>
+
+<p><img src="../../../../../../img/in-post/2020.08/28/Table 4.jpg" alt="Table 4" /></p>
+
+<p><img src="../../../../../../img/in-post/2020.08/28/Figure 5.jpg" alt="Figure 5" /></p>
+:ET
