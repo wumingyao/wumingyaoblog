@@ -1,0 +1,132 @@
+I"�-<h2 id="主要内容">主要内容</h2>
+<ul>
+  <li><a href="#p1">ABSTRACT</a></li>
+  <li><a href="#p2">一、INTRODUCTION</a></li>
+  <li><a href="#p3">二、Preliminaries and Problem Defintion</a></li>
+  <li><a href="#p4">三、Minute-level Real-time Traffic Accident Forecasting</a></li>
+  <li><a href="#p5">四、EXPERIMENT</a></li>
+</ul>
+
+<h2 id="参考论文">参考论文：</h2>
+<p><a href="https://arxiv.org/ftp/arxiv/papers/1911/1911.12093.pdf">《Multi-Range Attentive Bicomponent Graph Convolutional Network for Traffic Forecasting》</a></p>
+
+<h2 id="正文">正文</h2>
+
+<h3 id="abstract"><span id="p1">ABSTRACT</span></h3>
+<p>实时的交通事故预测对与公共安全和城市管理（例如，实时安全路线规划和应急响应部署）越来越重要。
+以往的事故预测工作通常是在小时水平上进行的，利用现有的神经网络，考虑了静态区域相关性。
+然而，由于路网的高度动态性和同一训练样本中事故记录的内在稀缺性，使得预测步骤的粒度不断提高，导致预测结果的偏差和零膨胀问题。
+在本文中，我们提出了一个全新的框架RiskOracle，用于改善预测的粒度到分钟级别。
+具体而言，我们首先转换标签中的零风险值以适应训练网络。然后，我们提出了差分时变图神经网络（DTGN）来捕捉交通状态的即时变化和动态分区间相关性。
+此外，我们采用多任务和区域选择方案，突出全市最有可能发生事故的分区，弥合有偏差的风险值与零星事故分布之间的差距。
+在两个真实数据集上进行的大量实验证明了RiskOracle框架的有效性和可伸缩性。</p>
+<h3 id="一introduction"><span id="p2">一、INTRODUCTION</span></h3>
+<p>交通事故预测对公共安全具有重要意义。例如，随着田纳西州交通事故模型的部署，2016年，田纳西州的死亡率降低了8.16%。
+越来越多的人要求对事故进行更精细的预测，以便为出行者提供更及时的安全路线建议，
+并为交通智能和自动驾驶等新兴应用提供准确的应急响应。</p>
+
+<p>关于事故预测的长度，现有的交通事故的预测主要分为两类：long-term(day-level prediction) and mid-term(hour-level prediction)。
+我们在表一里面总结了这些相关的工作。虽然近期的研究关注day-level forecasting(Chang 2005;Yuan,Zhou,and Yang 2018;Tennessee model 2017)
+通过建模时空异构数据实现有效性，(Yuan，zhou，和Yang2018)达到了SOTA性能，然而这类事故预测对紧急情况的意义不大。</p>
+
+<p>hour-level的中期事故预测可以进一步分类为传统方法和深度学习方法。传统学习方法包括基于聚类的方法，基于频繁树的方法以及基于非负矩阵
+分解的方法。不幸的是，这类型的的方法都忽略了时间相关性并且不能建模复杂的非线性时空相关性。</p>
+
+<p>基于深度学习的方法例如（Ren et al. 2018)
+利用LSTM层通过喂给网络历史的交通事故数据来学习时间相关性，由于缺少多元实时交通输入来支持预测，导致性能不佳。
+有一些工作（Chen et al. 2016;2018a;Bao 2019)通过现有的深度学习框架来例如SDAE,SDCAE和ConvLSTM来预测
+交通事故。然而他们没有提取时变的的区域间的相关性。</p>
+
+<p>虽然深度学习方法的先进性可以促进小时级别的事故预测的性能，我们认为有三个重要的因素导致其在分钟级别的事故预测性能不佳。
+首先，例如在(Bao 2019)提及的，当时空分辨率的提高，零膨胀问题将会出现（即预测结果都是零）。
+在没有任何策略来处理这个问题的情况下，训练数据中罕见的非零项会使模型失效（Wang et al.2018a）。
+第二，即使子区域之间的相关性能够被CNN学习(Chen et al. 2018a;Bao 2019)，时变的子区域之间的相关性同样在
+城市级别的短期事故预测中具有重要作用。例如，受交通流量的影响，两个区域之间在早上具有强相关性在下午具有弱相关性。</p>
+
+<p>第三，相邻时间间隔内同一分区内交通状况的异常变化通常会导致事故或其他事件的发生(Chen et al.2018b;Zheng,Zhang,and Yu 2015).
+由于没有没有考虑时空的因素，hour-level的交通事故的预测的性能被严重阻碍。
+<img src="../../../../../../img/in-post/2020.11/03/Table 1.jpg" alt="Table 1" /></p>
+
+<p>在这篇文章中，我们通过提出一个基于多任务差分时变图卷积网络*Multi-task DTGN)three-stage框架RiskOracle来研究了分钟级别的城市范围的交通事故预测。
+在数据预处理阶段，我们提出了一种协同感知策略来最大限度地推断全局交通状况，
+然后设计了一种基于先验知识的数据增强方法，以解决短期预测中的零膨胀问题。
+在训练阶段，我们使用Multi-task DTGN。
+其中，时变overall affinity显式地模拟短期动态子区域横向关联，
+差分特征生成器建立了交通状态和事故的直接变化之间的高层关系。</p>
+
+<p>众所周知，事故和交通流量在城市的分布是不平衡的，因此多任务模式是为了处理交通事故预测中的空间异质性。
+所以在预测阶段，利用已学习到的多尺度事故分布，得到一组离散的最可能发生事故的子区域。</p>
+
+<p>在两个数据集上的实验证明我们的框架在30min和10min级别的预测任务上超过了SOTA的解决方案。</p>
+<h3 id="二preliminaries-and-problem-defintion"><span id="p3">二、Preliminaries and Problem Defintion</span></h3>
+<p>在这一节中，我们给出基本的定义，然后公式化的定义本文的研究问题。</p>
+
+<p>在我们的工作中，我们发现如果将整个研究区域作为全局的方形区域直接建模并采用传统的CNN来提取空间特征会导致不必要的冗余。
+尤其是对于时变的事故预测，因为城市的轮廓通常是不规则的。</p>
+
+<p>如图2(a)所示，我们首先用道路网络将研究区域划分为q个中等大小规则区域。每个规则区域包含几个小的方形子区域。
+一共有m个子区域在研究区域里面，我们通过urban graph建模m个子区域。</p>
+
+<p>定义1(Urban Graph)整个研究区域可以被定义为一个2无向图，我们称为urban graph $G(\nu,\varepsilon)$。
+vertex set$\nu={\nu_1,\nu_2,\cdots,\nu_m}$，其中$\nu_i$表示第i个方形子区域。给定两个点$\nu_i,\nu_j\in\nu$,
+则这两个点的边$e_{ij}\in\varepsilon$便是两个子区域相连，
+<img src="../../../../../../img/in-post/2020.11/03/Tag 1.jpg" alt="Tag 1" />
+在本文中，点的交通因素包含两方面：静态路网特征和动态的交通特征。我们保持整个urban graph的$rho$连通性来
+控制关系矩阵的$A_S$和$A_O^{\triangle t}$,而矩阵中相应的非零项是指具有强相关性的子区域。</p>
+
+<p>子区域$\nu_i$在特定的时间间隔$\triangle t$的交通特征可以被三部分建模，(a)人类活动的强度，由交通流量表示$TV_{\nu_i}(\triangle t)$;
+(b)交通条件，由交通平均速度$a_{v_i}(\triangle t)$表示；以及(c)交通事故的风险值risks$r_{v_i}(\triangle t)$。</p>
+
+<p>定义2(Static Road Network Features):对于一个子区域$\nu_i\in\nu$来说，路网的静态特征包括
+road lanes 的数量、road types、road segment lengths 和 widths、电子监控设备数量，对于所有路段而言，
+静态特征可以被标记为固定长度的向量$s_i$。整个城市区域的路网特征可以被标记为$S={s_1,s_2,\cdots,s_m}$</p>
+
+<p>定义3(Dynamic Traffic Features)对于$\nu_i\in\nu$,给定一个时间间隔$\triangle t$的路段$\nu_i$的动态交通特征
+被标记为$f_{\nu_i}(\triangle t)=\lbrace TV_{\nu_i}(\triangle t),a_{\nu_i}(\triangle t),r_{\nu_i}(\triangle t)\rbrace$。
+$r_{\nu_i}(\triangle t)=\sum_{j=1}^3 j*\tau_{\nu_i}^{\triangle t}(j)$。
+其中，$\tau_{\nu_i}^{\triangle t}(j)$表示j类型事故发生的数量。
+所以整个城市在时间间隔$\triangle t$的事故风险分布和动态交通特征可以表示为
+$\mathcal{R}(\triangle t)={r_{\nu_1}(\triangle t),r_{\nu_2}(\triangle t),\cdots,r_{\nu_m}(\triangle t)}$
+和$\mathcal{F}(\triangle t)=f_{\nu_1}(\triangle t),f_{\nu_2}(\triangle t),\cdots,f_{\nu_m}(\triangle t)$</p>
+
+<p>定义4(Traffic Accident Prediction)给定一个静态路网特征S和历史动态交通特征$\mathcal(\triangle t)(\triangle t=1,2,\cdots,T)$,
+我们的目标是预测城市交通事故风险分布$\mathcal{R}(T+1)$和挑选高风险子区域$\nu_{acc}(T+1)$。</p>
+
+<h3 id="三minute-level-real-time-traffic-accident-forecasting"><span id="p4">三、Minute-level Real-time Traffic Accident Forecasting</span></h3>
+<p>在这节中，我们首先展示我们提出的框架RiskOracle的概况，然后对每个阶段进行细化描述。
+<img src="../../../../../../img/in-post/2020.11/03/Figure 1.jpg" alt="Figure 1" /></p>
+<h4 id="framework-overview">Framework Overview</h4>
+<p>如图1描述，我们提出的框架包括三个阶段：数据预处理阶段、模型训练阶段和预测阶段。</p>
+
+<h4 id="data-preprocessing">Data Preprocessing</h4>
+<h5 id="addressing-spatiol-heterogenities-in-accident-prediction">Addressing Spatiol Heterogenities in Accident Prediction</h5>
+<p>由于大多数事故和交通量都覆盖在市中心，高风险值往往偏向城市地区，
+导致风险空间严重失衡，忽视了农村地区相对高风险区域。为了进行全市的事故预测，有必要挑选最有可能发生
+事故的地区并解决空间异质性。因此，如图2(a)所示，在本文中子区域是按层次组织的，他们负责收集细粒度和粗粒度的事故分布。
+然后，每个中等大小矩形区域中的子区域将进一步单独突出显示。多尺度分布可以看作是事故的分级分布。</p>
+
+<h5 id="overcoming-zero-infated-issue">Overcoming Zero-infated Issue</h5>
+<p>深度神经网络（dnn）遭受零膨胀问题的困扰，如果训练标签中的非零项极为罕见，则会预测无效的结果.
+如图2(b)所示，在NYC数据的研究区域的10分钟内，只有6个事故，证明了短期事故的罕见性。
+为了在实时事故预测中克服这个问题，我们设计了一个基于先验知识的数据增强策略(PKDE)来区分训练集的标签中的风险值。
+具体来说，对于时间间隔$\triangle t$，我们将$\mathcal{R}(\triangle t)$中的零值转换为负值。
+这个转换分为两个阶段：
+a)通过等式2将零值转换为一个事故风险指标；b)通过等式3将指标值转换为一个统计的事故强度值。</p>
+
+<p>给定一个子区域$\nu_i$，我们可以计算其事故风险指标$\varepsilon_{\nu_i}$:</p>
+
+\[\varepsilon_{\nu_i}=\frac{1}{N_{week}}\sum_{j=1}^{N_{week}}\frac{r_{\nu_i}(j)}{\sum_{k=1}^{m}r_{\nu_k}(j)}\tag{2}\]
+
+<p>其中，$N_{week}$是训练数据集总的周数，$r_{\nu_i}(j)$表示该子区域$\nu_i$在第j周所有时间片发生的事故总和。
+然后，我们可以计算区域$\nu_i$统计的事故强度值:</p>
+
+\[\pi_{\nu_i}=b_1 log_2 \varepsilon_{\nu_i}+b_2\tag{3}\]
+
+<p>其中，$b_1$和$b_2$是为了保持$\pi_{\nu_i}$的绝对值范围和风险值范围之间的对称性的系数。
+利用0和1之间的对数变换，可以很容易地使变换后的数据具有区分性，适用于训练网络。
+转换时通过以下实现的：
+1) 零项目分区的事故强度值为负，因此小于非零项目分区的值，反映出零项目分区的事故风险较低；
+2) 
+<img src="../../../../../../img/in-post/2020.11/03/Figure 2.jpg" alt="Figure 2" /></p>
+<h3 id="四experiment"><span id="p5">四、EXPERIMENT</span></h3>
+:ET

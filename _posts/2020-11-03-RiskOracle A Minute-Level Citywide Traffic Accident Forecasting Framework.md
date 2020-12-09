@@ -118,32 +118,44 @@ $\mathcal{R}(\triangle t)={r_{\nu_1}(\triangle t),r_{\nu_2}(\triangle t),\cdots,
 ##### Overcoming Zero-infated Issue
 深度神经网络（dnn）遭受零膨胀问题的困扰，如果训练标签中的非零项极为罕见，则会预测无效的结果.
 如图2(b)所示，在NYC数据的研究区域的10分钟内，只有6个事故，证明了短期事故的罕见性。
-为了在实时事故预测中克服这个问题，我们
+为了在实时事故预测中克服这个问题，我们设计了一个基于先验知识的数据增强策略(PKDE)来区分训练集的标签中的风险值。
+具体来说，对于时间间隔$\triangle t$，我们将$\mathcal{R}(\triangle t)$中的零值转换为负值。
+这个转换分为两个阶段：
+a)通过等式2将零值转换为一个事故风险指标；b)通过等式3将指标值转换为一个统计的事故强度值。
 
+给定一个子区域$\nu_i$，我们可以计算其事故风险指标$\varepsilon_{\nu_i}$:
 
+$$\varepsilon_{\nu_i}=\frac{1}{N_{week}}\sum_{j=1}^{N_{week}}\frac{r_{\nu_i}(j)}{\sum_{k=1}^{m}r_{\nu_k}(j)}\tag{2}$$
+
+其中，$N_{week}$是训练数据集总的周数，$r_{\nu_i}(j)$表示该子区域$\nu_i$在第j周所有时间片发生的事故总和。
+然后，我们可以计算区域$\nu_i$统计的事故强度值:
+
+$$\pi_{\nu_i}=b_1 log_2 \varepsilon_{\nu_i}+b_2\tag{3}$$
+
+其中，$b_1$和$b_2$是为了保持$\pi_{\nu_i}$的绝对值范围和风险值范围之间的对称性的系数。
+利用0和1之间的对数变换，可以很容易地使变换后的数据具有区分性，适用于训练网络。
+转换时通过以下实现的：
+1) 零项目分区的事故强度值为负，因此小于非零项目分区的值，反映出零项目分区的事故风险较低；
+2) 事故风险指标较低的分区域事故概率较低，保持了实际事故风险等级。
 ![Figure 2](../../../../../../img/in-post/2020.11/03/Figure 2.jpg)
+
+##### Complementing Sparse Sensing Data
+实时交通信息的采集往往不够充分(Wang et al. 2018b)，动态交通信息往往与静态的空间路网结构产生交互作用(Geng et al. 2019;Lin 2015)。
+我们提出了一种利用FM的交互操作将xDeepFM（Lian等人，2018）修改为时空深度因子分解机（ST-DFM）的共感策略。
+
+我们首先通过一个静态的affinity矩阵$\mathcal{A}_S$提取路网相似性和子区域之间的连通性,
+其中，$\mathcal{A}_S$中的$\alpha_S(i,j)$表示子区域$\nu_i$和$\nu_j$间的密切关系。
+
+![Tag 4](../../../../../../img/in-post/2020.11/03/Tag 4.jpg)
+
+其中，JS函数如下：
+
+![Tag 5](../../../../../../img/in-post/2020.11/03/Tag 5.jpg)
+
+与xDeepFM一样，ST-DFM包含压缩交互网络（CIN）模块和DNN模块。
+三个时空域：static sptial features,dynamic traffic features 和timestamps 被嵌入到ST-DFM。
+然后，ST-DFM用CIN模块学习不同时空特征在矢量层次上的交互关系，用DNN模块学习特征的高层表示，最终得到高层特征组合。
+我们通过将相应分区的交通量输入ST-DFM来推断速度值，反之亦然。通过对两个实时交通数据集的交叉口内的数据进行训练，
+可以最大限度地推断出交通信息，从而获得全局交通状态。
+
 ###  <span id="p5">四、EXPERIMENT</span>
-#### Experimental Settings 
-该任务是学习一个函数$f:\mathbb{R}^{N\times P\times T'}\rightarrow\mathbb{R}^{N\times P\times T}$。
-在该实验中，$T=T'=12$，BGCGRU的层数是2，带有64个隐藏单元。最大跳数$k$设置为3.
-使用Adam优化器进行训练，使用MAE做为监测指标，epochs=100,batch_size=64。
-初始学习率为le-2,每10个epochs衰减率为0.6。
-
-#### Effect of the Edge-Wise Graph
-为了验证edge-wise graph的有效性，将MRA-BGCN与两个变体进行比较：
-1) MRA-BGCN-Identity,该变体忽略边的相关性，并且使用一个单位矩阵来取代边的邻接矩阵。
-从本质上讲，这意味着边不会互相影响，而仅由连接的节点确定。
-2) MRA-BGCN-LineGraph,该变体使用line graph来取代edge-wise graph，line graph忽略了各种边交互模式。
-通过表3可以看处Edge-wise Graph的有效性。直觉是，所提出的Edge-wise Graph考虑了流的连通性和竞争关系，并使模型具有捕获复杂依赖性的能力。
-![Table 3](../../../../../../img/in-post/2020.08/28/Table 3.jpg)
-
-#### Effect of the Multi-Range Attention Mechanism
-为了进一步验证multi-range attention 机制的有效性，作者验证了MRA-BGCN和
-使用不同方法来利用多范围信息的两个变体的性能。
-1) BGCN,biocomponent graph convolutional network,该网络忽略多范围信息并使用在给定邻域范围内聚合的表示形式（即仅使用第𝑘层的输出）;
-2)  MR-BGCN, multi-range bicomponent graph convolutional network,该网络通过在每一层中连接表示来利用多范围信息，并认为来自每个邻域范围的信息都做出了同等贡献。
-表4可以看出Multi-Range Attention机制的有效性。
-
-![Table 4](../../../../../../img/in-post/2020.08/28/Table 4.jpg)
-
-![Figure 5](../../../../../../img/in-post/2020.08/28/Figure 5.jpg)
